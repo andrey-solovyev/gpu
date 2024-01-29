@@ -45,8 +45,7 @@ dt = timer() - start
 print("create_fractal with parallel %f s" % dt)
 
 
-
-@jit(nopython=True, parallel=False)
+@jit(nopython=True, parallel=False, target_backend='cuda')
 def mandel(x, y, max_iters):
     i = 0
     c = complex(x, y)
@@ -59,7 +58,7 @@ def mandel(x, y, max_iters):
     return 255
 
 
-@jit(nopython=True, parallel=False)
+@jit(nopython=True, parallel=False, target_backend='cuda')
 def create_fractal(min_x, max_x, min_y, max_y, image, iters):
     height = image.shape[0]
     width = image.shape[1]
@@ -88,4 +87,10 @@ dt = timer() - start
 print("create_fractal without parallel %f s" % dt)
 
 
-
+# :\Users\andru\AppData\Local\Programs\Python\Python310\lib\site-packages\numba\cuda\dispatcher.py:536: NumbaPerformanceWarning: Grid size 49 will likely result in GPU under-utilization due to low occupancy.
+#   warn(NumbaPerformanceWarning(msg))
+# ((7, 7), (32, 32))
+# C:\Users\andru\AppData\Local\Programs\Python\Python310\lib\site-packages\numba\cuda\cudadrv\devicearray.py:886: NumbaPerformanceWarning: Host array used in CUDA kernel will incur copy overhead to/from device.
+#   warn(NumbaPerformanceWarning(msg))
+# create_fractal with parallel 0.328841 s
+# create_fractal without parallel 40.372357 s
